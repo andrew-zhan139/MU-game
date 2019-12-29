@@ -1,57 +1,35 @@
 import pygame
+from pygame.locals import *
 
-pygame.init()
-width = 600
-height = 600
+fps=200
+
+winwidth = 400
+winheight = 400
+border = 10
+paddlesize = 50
+paddleoffset = 20
+
 white = (255,255,255)
-gameDisplay = pygame.display.set_mode((width, height))
-pygame.display.set_caption('Pong Game')
-clock = pygame.time.Clock()
+black = (0,0,0)
 
-pongimg = pygame.image.load(r'C:\Users\andre\Desktop\pong1.png')
+def main():
+    pygame.init()
+    global display
+    clock - pygame.time.Clock()
+    display = pygame.display.set_mode((winwidth, winheight))
+    pygame.display.set_caption('Pong Game')
 
+    while True:
+        for event in pygame.event.get():
+            if event.type ==QUIT:
+                pygame.quit()
+                sys.exit()
 
+        pygame.display.update()
+        clcok.tick(fps)
 
-x1 = (25)
-y1 = (height * 0.45)
+if __name__ == '__main__':
+    main()
 
-def pong1(x1,y1):
-    gameDisplay.blit(pongimg,(x1,y1))
-
-x2 = 575
-y2 = (height * 0.45)
-
-def pong2(x2,y2):
-    gameDisplay.blit(pongimg,(x2,y2))
-
-run = True
-vel=5
-while run:
-    pygame.time.delay(100)
-
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            run = False
-
-    keys = pygame.key.get_pressed()
+def gamedisplay():
     
-    if keys[pygame.K_w]:
-        y1 -= vel
-
-    if keys[pygame.K_s]:
-        y1 += vel
-
-    if keys[pygame.K_UP]:
-        y2 -= vel
-
-    if keys[pygame.K_DOWN]:
-        y2 += vel
-    
-    gameDisplay.fill((255,255,255))  # Fills the screen with black
-    pong1(x1,y1)
-    pong2(x2,y2)
-    pygame.display.update() 
-    
-pygame.quit()
-
-        
