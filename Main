@@ -23,18 +23,35 @@ y2 = (height * 0.45)
 
 def pong2(x2,y2):
     gameDisplay.blit(pongimg,(x2,y2))
-    
 
-while True:
-    gameDisplay.fill(white)
-    pong1(x1,y1)
-    pong2(x2, y2)
+run = True
+vel=5
+while run:
+    pygame.time.delay(100)
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
-            pygame.quit()
-            quit()
+            run = False
 
+    keys = pygame.key.get_pressed()
     
+    if keys[pygame.K_w]:
+        y1 -= vel
+
+    if keys[pygame.K_s]:
+        y1 += vel
+
+    if keys[pygame.K_UP]:
+        y2 -= vel
+
+    if keys[pygame.K_DOWN]:
+        y2 += vel
     
-        pygame.display.update()
+    gameDisplay.fill((255,255,255))  # Fills the screen with black
+    pong1(x1,y1)
+    pong2(x2,y2)
+    pygame.display.update() 
+    
+pygame.quit()
+
+        
