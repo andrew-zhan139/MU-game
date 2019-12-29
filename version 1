@@ -1,0 +1,36 @@
+
+import pygame
+from pygame.locals import *
+
+fps=200
+
+winwidth = 400
+winheight = 400
+border = 10
+paddlesize = 50
+paddleoffset = 20
+
+white = (255,255,255)
+black = (0,0,0)
+
+def main():
+    pygame.init()
+    global display
+    clock - pygame.time.Clock()
+    display = pygame.display.set_mode((winwidth, winheight))
+    pygame.display.set_caption('Pong Game')
+
+    while True:
+        for event in pygame.event.get():
+            if event.type ==QUIT:
+                pygame.quit()
+                sys.exit()
+
+        pygame.display.update()
+        clcok.tick(fps)
+
+if __name__ == '__main__':
+    main()
+
+def gamedisplay():
+    
