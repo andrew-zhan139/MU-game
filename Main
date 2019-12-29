@@ -1,1 +1,40 @@
-#hello
+import pygame
+
+pygame.init()
+width = 600
+height = 600
+white = (255,255,255)
+gameDisplay = pygame.display.set_mode((width, height))
+pygame.display.set_caption('Pong Game')
+clock = pygame.time.Clock()
+
+pongimg = pygame.image.load(r'C:\Users\andre\Desktop\pong1.png')
+
+
+
+x1 = (25)
+y1 = (height * 0.45)
+
+def pong1(x1,y1):
+    gameDisplay.blit(pongimg,(x1,y1))
+
+x2 = 575
+y2 = (height * 0.45)
+
+def pong2(x2,y2):
+    gameDisplay.blit(pongimg,(x2,y2))
+    
+
+while True:
+    gameDisplay.fill(white)
+    pong1(x1,y1)
+    pong2(x2, y2)
+
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            pygame.quit()
+            quit()
+
+    
+    
+        pygame.display.update()
