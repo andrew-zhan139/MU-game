@@ -1,5 +1,5 @@
-
 import pygame
+import sys
 from pygame.locals import *
 
 fps=200
@@ -13,24 +13,113 @@ paddleoffset = 20
 white = (255,255,255)
 black = (0,0,0)
 
+
+def gamedisplay():
+    display1.fill(black)
+    pygame.draw.rect(display1, black, ((0,0),(winwidth, winheight)), border*2)
+
+def drawpaddle(paddle):
+    if paddle.bottom > winheight - border:
+        paddle.bottom = winheight - border
+    elif paddle.top < border:
+        paddle.top = border
+
+    pygame.draw.rect(display1, white, paddle)
+
+def drawball(ball):
+    pygame.draw.rect(display1, white, ball)
+
+def moveball(ball, direcx, direcy):
+    ball.x += direcx
+    ball.y += direcy
+    return ball
+
+def collision(ball, direcx, direcy):
+    if ball.top == border or ball.bottom == winheight - border:
+        direcy = direcy * -1
+    if ball.left == border or ball.right == winwidth - border:
+        direcx = direcx * -1
+    return direcx, direcy
+
 def main():
     pygame.init()
-    global display
-    clock - pygame.time.Clock()
-    display = pygame.display.set_mode((winwidth, winheight))
+    global display1
+    clock = pygame.time.Clock()
+    display1 = pygame.display.set_mode((winwidth, winheight))
     pygame.display.set_caption('Pong Game')
 
+    ballx = winwidth/2 - border/2
+    bally = winheight/2 - border/2
+    playerpos1 = (winwidth - paddlesize)/2
+    playerpos2 = (winheight - paddlesize)/2
+
+    direcx = -1
+    direcy = -1
+
+    paddle1 = pygame.Rect(paddleoffset, playerpos1, border, paddlesize)
+    paddle2 = pygame.Rect(winwidth - paddleoffset - border, playerpos2, border, paddlesize)
+    ball = pygame.Rect(ballx, bally, border, border)
+
+    gamedisplay()
+    drawpaddle(paddle1)
+    drawpaddle(paddle2)
+    drawball(ball)
+        
     while True:
         for event in pygame.event.get():
             if event.type ==QUIT:
                 pygame.quit()
                 sys.exit()
 
+        
+        gamedisplay()
+        drawpaddle(paddle1)
+        drawpaddle(paddle2)
+        drawball(ball)
+
+        ball = moveball(ball, direcx, direcy)
+        direcx, direcy = collision(ball, direcx, direcy)
+
+
+        keys = pygame.key.get_pressed()
+    
+        if keys[pygame.K_w]:
+            y1 -= vel
+
+        if keys[pygame.K_s]:
+            y1 += vel
+
+        if keys[pygame.K_UP]:
+            y2 -= vel
+
+        if keys[pygame.K_DOWN]:
+            y2 += vel
+    
+        display1.fill((255,255,255)) 
+
+        
         pygame.display.update()
-        clcok.tick(fps)
+        clock.tick(fps)
 
 if __name__ == '__main__':
     main()
 
-def gamedisplay():
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     
