@@ -1,0 +1,136 @@
+import pygame
+import sys
+from pygame.locals import *
+
+fps=200
+
+winwidth = 400
+winheight = 400
+border = 10
+paddlesize = 50
+paddleoffset = 20
+
+white = (255,255,255)
+black = (0,0,0)
+
+
+def gamedisplay():
+    display1.fill(black)
+    pygame.draw.rect(display1, black, ((0,0),(winwidth, winheight)), border*2)
+
+def drawpaddle(paddle):
+    if paddle.bottom > winheight - border:
+        paddle.bottom = winheight - border
+    elif paddle.top < border:
+        paddle.top = border
+
+    pygame.draw.rect(display1, white, paddle)
+
+def drawball(ball):
+    pygame.draw.rect(display1, white, ball)
+
+def moveball(ball, direcx, direcy):
+    ball.x += direcx
+    ball.y += direcy
+    return ball
+
+def goal(ball, score):
+    if ball.left == border:
+        new = score[1] + 1
+        return [score[0], new]
+    elif ball.right == winwidth - border:
+        new = score[0] + 1
+        return [new, score[1]]
+    else:
+        return score
+                
+
+def collision(ball, direcx, direcy):
+    if ball.top == border or ball.bottom == winheight - border:
+        direcy = direcy * -1
+    if ball.left == border or ball.right == winwidth - border:
+        direcx = direcx * -1
+    return direcx, direcy
+
+def hitball(ball, paddle1, paddle2, direcx):
+    if direcx == -1 and paddle1.right == ball.left and paddle1.top < ball.top and paddle1.bottom > ball.bottom:
+        return -1
+    elif direcx == 1 and paddle2.left == ball.right and paddle2.top < ball.top and paddle2.bottom > ball.bottom:
+        return -1
+    else:
+        return 1
+
+def displayscore(score):
+    resultsurf = myfont.render('Player 1: %s     Player 2: %s' %(score[0], score[1]), True, white)
+    resultbox = resultsurf.get_rect()
+    resultbox.topleft = (winwidth - 320, 25)
+    display1.blit(resultsurf, resultbox)
+    
+
+def main():
+    pygame.init()
+    global display1
+    global myfont, fontsize
+    fontsize = 20
+    myfont = pygame.font.Font('freesansbold.ttf', fontsize)
+    clock = pygame.time.Clock()
+    display1 = pygame.display.set_mode((winwidth, winheight))
+    pygame.display.set_caption('Pong Game')
+
+    ballx = winwidth/2 - border/2
+    bally = winheight/2 - border/2
+    playerpos1 = (winwidth - paddlesize)/2
+    playerpos2 = (winheight - paddlesize)/2
+    score = [0,0]
+
+    direcx = -1
+    direcy = -1
+
+    paddle1 = pygame.Rect(paddleoffset, playerpos1, border, paddlesize)
+    paddle2 = pygame.Rect(winwidth - paddleoffset - border, playerpos2, border, paddlesize)
+    ball = pygame.Rect(ballx, bally, border, border)
+
+    gamedisplay()
+    drawpaddle(paddle1)
+    drawpaddle(paddle2)
+    drawball(ball)
+    vel = 3  
+    while True:
+        for event in pygame.event.get():
+            if event.type ==QUIT:
+                pygame.quit()
+                sys.exit()
+
+        
+        gamedisplay()
+        drawpaddle(paddle1)
+        drawpaddle(paddle2)
+        drawball(ball)
+        ball = moveball(ball, direcx, direcy)
+        direcx, direcy = collision(ball, direcx, direcy)
+        direcx = direcx * hitball(ball, paddle1, paddle2, direcx)
+        score = goal(ball, score)
+        displayscore(score)
+
+        keys = pygame.key.get_pressed()
+    
+        if keys[pygame.K_w]:
+            paddle1.y -= vel
+
+        if keys[pygame.K_s]:
+            paddle1.y += vel
+
+        if keys[pygame.K_UP]:
+            paddle2.y -= vel
+
+        if keys[pygame.K_DOWN]:
+            paddle2.y += vel
+    
+        
+        pygame.display.update()
+        clock.tick(fps)
+
+if __name__ == '__main__':
+    main()
+
+
