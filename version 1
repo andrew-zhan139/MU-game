@@ -64,7 +64,7 @@ def main():
     drawpaddle(paddle1)
     drawpaddle(paddle2)
     drawball(ball)
-        
+    vel = 3  
     while True:
         for event in pygame.event.get():
             if event.type ==QUIT:
@@ -79,47 +79,27 @@ def main():
 
         ball = moveball(ball, direcx, direcy)
         direcx, direcy = collision(ball, direcx, direcy)
-
+        
 
         keys = pygame.key.get_pressed()
     
         if keys[pygame.K_w]:
-            y1 -= vel
+            paddle1.y -= vel
 
         if keys[pygame.K_s]:
-            y1 += vel
+            paddle1.y += vel
 
         if keys[pygame.K_UP]:
-            y2 -= vel
+            paddle2.y -= vel
 
         if keys[pygame.K_DOWN]:
-            y2 += vel
+            paddle2.y += vel
     
-        display1.fill((255,255,255)) 
-
         
-        pygame.display.update()
-        clock.tick(fps)
-
+s        pygame.display.update()
+ s       clock.tick(fps)
+s
 if __name__ == '__main__':
     main()
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    
